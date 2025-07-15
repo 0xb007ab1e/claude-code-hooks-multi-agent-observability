@@ -1,0 +1,52 @@
+{
+  "timestamp": "2025-07-14T23:01:49.789685",
+  "duration": 1.9177165031433105,
+  "total_suites": 5,
+  "passed_suites": 0,
+  "failed_suites": 5,
+  "success_rate": 0.0,
+  "server_image": null,
+  "branch": null,
+  "results": {
+    "REST API Tests": {
+      "command": "python -m pytest tests/test_rest_api.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.11.2, pytest-7.4.3, pluggy-1.6.0 -- /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/test-env/bin/python\ncachedir: .pytest_cache\nmetadata: {'Python': '3.11.2', 'Platform': 'Linux-6.12.32-amd64-x86_64-with-glibc2.36', 'Packages': {'pytest': '7.4.3', 'pluggy': '1.6.0'}, 'Plugins': {'xdist': '3.5.0', 'metadata': '3.1.1', 'asyncio': '0.21.1', 'html': '4.1.1', 'json-report': '1.5.0'}}\nrootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability\nplugins: xdist-3.5.0, metadata-3.1.1, asyncio-0.21.1, html-4.1.1, json-report-1.5.0\nasyncio: mode=Mode.STRICT\ncollecting ... collected 0 items\n\n--------------------------------- JSON report ----------------------------------\nreport saved to: reports/report.json\n- Generated html report: file:///home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/reports/report.html -\n============================ no tests ran in 0.01s =============================\n",
+      "stderr": "ERROR: file or directory not found: tests/test_rest_api.py\n\n",
+      "duration": 0.4008674621582031,
+      "success": false
+    },
+    "WebSocket Tests": {
+      "command": "python -m pytest tests/test_websockets.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.11.2, pytest-7.4.3, pluggy-1.6.0 -- /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/test-env/bin/python\ncachedir: .pytest_cache\nmetadata: {'Python': '3.11.2', 'Platform': 'Linux-6.12.32-amd64-x86_64-with-glibc2.36', 'Packages': {'pytest': '7.4.3', 'pluggy': '1.6.0'}, 'Plugins': {'xdist': '3.5.0', 'metadata': '3.1.1', 'asyncio': '0.21.1', 'html': '4.1.1', 'json-report': '1.5.0'}}\nrootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability\nplugins: xdist-3.5.0, metadata-3.1.1, asyncio-0.21.1, html-4.1.1, json-report-1.5.0\nasyncio: mode=Mode.STRICT\ncollecting ... collected 0 items\n\n--------------------------------- JSON report ----------------------------------\nreport saved to: reports/report.json\n- Generated html report: file:///home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/reports/report.html -\n============================ no tests ran in 0.00s =============================\n",
+      "stderr": "ERROR: file or directory not found: tests/test_websockets.py\n\n",
+      "duration": 0.35877084732055664,
+      "success": false
+    },
+    "Database Tests": {
+      "command": "python -m pytest tests/test_database.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.11.2, pytest-7.4.3, pluggy-1.6.0 -- /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/test-env/bin/python\ncachedir: .pytest_cache\nmetadata: {'Python': '3.11.2', 'Platform': 'Linux-6.12.32-amd64-x86_64-with-glibc2.36', 'Packages': {'pytest': '7.4.3', 'pluggy': '1.6.0'}, 'Plugins': {'xdist': '3.5.0', 'metadata': '3.1.1', 'asyncio': '0.21.1', 'html': '4.1.1', 'json-report': '1.5.0'}}\nrootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability\nplugins: xdist-3.5.0, metadata-3.1.1, asyncio-0.21.1, html-4.1.1, json-report-1.5.0\nasyncio: mode=Mode.STRICT\ncollecting ... collected 0 items\n\n--------------------------------- JSON report ----------------------------------\nreport saved to: reports/report.json\n- Generated html report: file:///home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/reports/report.html -\n============================ no tests ran in 0.00s =============================\n",
+      "stderr": "ERROR: file or directory not found: tests/test_database.py\n\n",
+      "duration": 0.3336350917816162,
+      "success": false
+    },
+    "Edge Case Tests": {
+      "command": "python -m pytest tests/test_edge_cases.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.11.2, pytest-7.4.3, pluggy-1.6.0 -- /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/test-env/bin/python\ncachedir: .pytest_cache\nmetadata: {'Python': '3.11.2', 'Platform': 'Linux-6.12.32-amd64-x86_64-with-glibc2.36', 'Packages': {'pytest': '7.4.3', 'pluggy': '1.6.0'}, 'Plugins': {'xdist': '3.5.0', 'metadata': '3.1.1', 'asyncio': '0.21.1', 'html': '4.1.1', 'json-report': '1.5.0'}}\nrootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability\nplugins: xdist-3.5.0, metadata-3.1.1, asyncio-0.21.1, html-4.1.1, json-report-1.5.0\nasyncio: mode=Mode.STRICT\ncollecting ... collected 0 items\n\n--------------------------------- JSON report ----------------------------------\nreport saved to: reports/report.json\n- Generated html report: file:///home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/reports/report.html -\n============================ no tests ran in 0.01s =============================\n",
+      "stderr": "ERROR: file or directory not found: tests/test_edge_cases.py\n\n",
+      "duration": 0.3410501480102539,
+      "success": false
+    },
+    "Integration Tests": {
+      "command": "python -m pytest tests/ -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.11.2, pytest-7.4.3, pluggy-1.6.0 -- /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/test-env/bin/python\ncachedir: .pytest_cache\nmetadata: {'Python': '3.11.2', 'Platform': 'Linux-6.12.32-amd64-x86_64-with-glibc2.36', 'Packages': {'pytest': '7.4.3', 'pluggy': '1.6.0'}, 'Plugins': {'xdist': '3.5.0', 'metadata': '3.1.1', 'asyncio': '0.21.1', 'html': '4.1.1', 'json-report': '1.5.0'}}\nrootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability\nplugins: xdist-3.5.0, metadata-3.1.1, asyncio-0.21.1, html-4.1.1, json-report-1.5.0\nasyncio: mode=Mode.STRICT\ncollecting ... collected 0 items\n\n--------------------------------- JSON report ----------------------------------\nreport saved to: reports/report.json\n- Generated html report: file:///home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/reports/report.html -\n============================ no tests ran in 0.01s =============================\n",
+      "stderr": "ERROR: file or directory not found: tests/\n\n",
+      "duration": 0.48339295387268066,
+      "success": false
+    }
+  }
+}

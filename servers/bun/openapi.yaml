@@ -1,0 +1,272 @@
+openapi: 3.1.0
+info:
+  title: Multi-Agent Observability Server API
+  version: 1.0.0
+servers:
+  - url: http://localhost:{port}
+    variables:
+      port:
+        default: "4000"
+paths:
+  /events:
+    post:
+      summary: Receive new events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HookEvent'
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HookEvent'
+        '400':
+          description: Bad Request
+  /events/filter-options:
+    get:
+      summary: Get available filter options
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilterOptions'
+  /events/recent:
+    get:
+      summary: Get recent events
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HookEvent'
+  /api/themes:
+    post:
+      summary: Create a new theme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Theme'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+    get:
+      summary: Search themes
+      parameters:
+        - name: query
+          in: query
+          schema:
+            type: string
+        - name: isPublic
+          in: query
+          schema:
+            type: string
+        - name: authorId
+          in: query
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Theme'
+  /api/themes/{id}:
+    get:
+      summary: Get a specific theme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theme'
+    put:
+      summary: Update a theme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Theme'
+      responses:
+        '200':
+          description: Successful Operation
+        '400':
+          description: Bad Request
+    delete:
+      summary: Delete a theme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: authorId
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+        '403':
+          description: Forbidden
+  /api/themes/{id}/export:
+    get:
+      summary: Export a theme
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/themes/import:
+    post:
+      summary: Import a theme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+  /api/themes/stats:
+    get:
+      summary: Get theme statistics
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    HookEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+        source_app:
+          type: string
+        session_id:
+          type: string
+        hook_event_type:
+          type: string
+        payload:
+          type: object
+        chat:
+          type: array
+        summary:
+          type: string
+        timestamp:
+          type: integer
+    FilterOptions:
+      type: object
+      properties:
+        source_apps:
+          type: array
+          items:
+            type: string
+        session_ids:
+          type: array
+          items:
+            type: string
+        hook_event_types:
+          type: array
+          items:
+            type: string
+    Theme:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        colors:
+          type: object
+        isPublic:
+          type: boolean
+        authorId:
+          type: string
+        authorName:
+          type: string
+        createdAt:
+          type: integer
+        updatedAt:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        downloadCount:
+          type: integer
+        rating:
+          type: number
+        ratingCount:
+          type: integer
+

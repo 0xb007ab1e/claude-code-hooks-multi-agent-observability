@@ -6,19 +6,21 @@
   "private": true,
   "workspaces": [
     "apps/client",
-    "apps/server"
+    "servers/bun",
+    "servers/node"
   ],
   "scripts": {
-    "install:all": "npm install && npm install --prefix apps/client && npm install --prefix apps/server",
-    "build": "npm run build --prefix apps/client && npm run typecheck --prefix apps/server",
+    "install:all": "npm install && npm install --prefix apps/client && npm install --prefix servers/bun",
+    "build": "npm run build --prefix apps/client && npm run typecheck --prefix servers/bun && npm run build --prefix servers/node",
     "build:client": "npm run build --prefix apps/client",
-    "build:server": "npm run typecheck --prefix apps/server",
+    "build:server": "npm run typecheck --prefix servers/bun",
     "dev": "./scripts/start-system.sh",
     "start": "./scripts/start-system.sh",
     "stop": "./scripts/reset-system.sh",
     "test": "./scripts/test-system.sh",
-    "clean": "rm -rf apps/client/node_modules apps/server/node_modules node_modules",
-    "reset": "./scripts/reset-system.sh"
+    "clean": "rm -rf apps/client/node_modules servers/bun/node_modules node_modules",
+    "reset": "./scripts/reset-system.sh",
+    "e2e": "./scripts/run-e2e.sh"
   },
   "bin": {
     "claude-observability": "./scripts/start-system.sh",
