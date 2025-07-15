@@ -140,7 +140,8 @@ def create_orchestrator_config():
                         "commands": [
                             f"cd {project_root}/apps/server",
                             "echo '🖥️  Starting backend server...'",
-                            "bun run dev"
+                            "BUN=${BUN:-$(command -v bun || echo ~/.bun/bin/bun)}",
+                            "$BUN run dev"
                         ]
                     },
                     {
@@ -148,7 +149,8 @@ def create_orchestrator_config():
                         "commands": [
                             f"cd {project_root}/apps/client",
                             "echo '🎨 Starting client development server...'",
-                            "bun run dev"
+                            "BUN=${BUN:-$(command -v bun || echo ~/.bun/bin/bun)}",
+                            "$BUN run dev"
                         ]
                     }
                 ]
@@ -386,10 +388,10 @@ def create_tmux_session_manually():
                        f"cd {project_root} && code .", "Enter"], check=True)
         
         subprocess.run(["tmux", "send-keys", "-t", "claude-dev-env:main.1", 
-                       f"cd {project_root}/apps/server && bun run dev", "Enter"], check=True)
+                       f"cd {project_root}/apps/server && BUN=${{BUN:-$(command -v bun || echo ~/.bun/bin/bun)}} && $BUN run dev", "Enter"], check=True)
         
         subprocess.run(["tmux", "send-keys", "-t", "claude-dev-env:main.2", 
-                       f"cd {project_root}/apps/client && bun run dev", "Enter"], check=True)
+                       f"cd {project_root}/apps/client && BUN=${{BUN:-$(command -v bun || echo ~/.bun/bin/bun)}} && $BUN run dev", "Enter"], check=True)
         
         # Create additional window for hooks
         subprocess.run(["tmux", "new-window", "-t", "claude-dev-env", "-n", "hooks"], check=True)
