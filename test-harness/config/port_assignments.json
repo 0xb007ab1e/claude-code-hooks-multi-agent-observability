@@ -1,0 +1,41 @@
+{
+  "base_port": 4000,
+  "next_port": 4007,
+  "assignments": {
+    "http-server": {
+      "port": 4000,
+      "purpose": "Main HTTP Server",
+      "assigned_at": "2025-07-15T00:41:44.015368"
+    },
+    "postgres": {
+      "port": 4001,
+      "purpose": "PostgreSQL Database",
+      "assigned_at": "2025-07-15T00:41:44.015671"
+    },
+    "mongo": {
+      "port": 4002,
+      "purpose": "MongoDB Database",
+      "assigned_at": "2025-07-15T00:41:44.015846"
+    },
+    "redis": {
+      "port": 4003,
+      "purpose": "Redis Cache (future)",
+      "assigned_at": "2025-07-15T00:41:44.016033"
+    },
+    "elasticsearch": {
+      "port": 4004,
+      "purpose": "Elasticsearch (future)",
+      "assigned_at": "2025-07-15T00:41:44.016158"
+    },
+    "grafana": {
+      "port": 4005,
+      "purpose": "Grafana Dashboard (future)",
+      "assigned_at": "2025-07-15T00:41:44.016355"
+    },
+    "prometheus": {
+      "port": 4006,
+      "purpose": "Prometheus Metrics (future)",
+      "assigned_at": "2025-07-15T00:41:44.016476"
+    }
+  }
+}

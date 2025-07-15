@@ -1,0 +1,52 @@
+{
+  "timestamp": "2025-07-15T00:07:59.337818",
+  "duration": 1.2080564498901367,
+  "total_suites": 5,
+  "passed_suites": 0,
+  "failed_suites": 5,
+  "success_rate": 0.0,
+  "server_image": null,
+  "branch": null,
+  "results": {
+    "REST API Tests": {
+      "command": "python -m pytest tests/test_rest_api.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "",
+      "stderr": "/home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/venv/lib/python3.11/site-packages/_pytest/config/__init__.py:331: PluggyTeardownRaisedWarning: A plugin raised an exception during an old-style hookwrapper teardown.\nPlugin: helpconfig, Hook: pytest_cmdline_parse\nUsageError: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\nFor more information see https://pluggy.readthedocs.io/en/stable/api_reference.html#pluggy.PluggyTeardownRaisedWarning\n  config = pluginmanager.hook.pytest_cmdline_parse(\nERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\n\n",
+      "duration": 0.30382680892944336,
+      "success": false
+    },
+    "WebSocket Tests": {
+      "command": "python -m pytest tests/test_websockets.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "",
+      "stderr": "/home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/venv/lib/python3.11/site-packages/_pytest/config/__init__.py:331: PluggyTeardownRaisedWarning: A plugin raised an exception during an old-style hookwrapper teardown.\nPlugin: helpconfig, Hook: pytest_cmdline_parse\nUsageError: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\nFor more information see https://pluggy.readthedocs.io/en/stable/api_reference.html#pluggy.PluggyTeardownRaisedWarning\n  config = pluginmanager.hook.pytest_cmdline_parse(\nERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\n\n",
+      "duration": 0.22405529022216797,
+      "success": false
+    },
+    "Database Tests": {
+      "command": "python -m pytest tests/test_database.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "",
+      "stderr": "/home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/venv/lib/python3.11/site-packages/_pytest/config/__init__.py:331: PluggyTeardownRaisedWarning: A plugin raised an exception during an old-style hookwrapper teardown.\nPlugin: helpconfig, Hook: pytest_cmdline_parse\nUsageError: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\nFor more information see https://pluggy.readthedocs.io/en/stable/api_reference.html#pluggy.PluggyTeardownRaisedWarning\n  config = pluginmanager.hook.pytest_cmdline_parse(\nERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\n\n",
+      "duration": 0.22742867469787598,
+      "success": false
+    },
+    "Edge Case Tests": {
+      "command": "python -m pytest tests/test_edge_cases.py -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "",
+      "stderr": "/home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/venv/lib/python3.11/site-packages/_pytest/config/__init__.py:331: PluggyTeardownRaisedWarning: A plugin raised an exception during an old-style hookwrapper teardown.\nPlugin: helpconfig, Hook: pytest_cmdline_parse\nUsageError: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\nFor more information see https://pluggy.readthedocs.io/en/stable/api_reference.html#pluggy.PluggyTeardownRaisedWarning\n  config = pluginmanager.hook.pytest_cmdline_parse(\nERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\n\n",
+      "duration": 0.22829151153564453,
+      "success": false
+    },
+    "Integration Tests": {
+      "command": "python -m pytest tests/ -v --tb=short --html=reports/report.html --self-contained-html --json-report --json-report-file=reports/report.json",
+      "return_code": 4,
+      "stdout": "",
+      "stderr": "/home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/venv/lib/python3.11/site-packages/_pytest/config/__init__.py:331: PluggyTeardownRaisedWarning: A plugin raised an exception during an old-style hookwrapper teardown.\nPlugin: helpconfig, Hook: pytest_cmdline_parse\nUsageError: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\nFor more information see https://pluggy.readthedocs.io/en/stable/api_reference.html#pluggy.PluggyTeardownRaisedWarning\n  config = pluginmanager.hook.pytest_cmdline_parse(\nERROR: usage: __main__.py [options] [file_or_dir] [file_or_dir] [...]\n__main__.py: error: unrecognized arguments: --json-report --json-report-file=reports/report.json\n  inifile: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness/pytest.ini\n  rootdir: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/test-harness\n\n",
+      "duration": 0.22445416450500488,
+      "success": false
+    }
+  }
+}

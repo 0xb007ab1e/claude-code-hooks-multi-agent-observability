@@ -1,0 +1,121 @@
+# Docker Compose override file for testing different server implementations
+# This file allows swapping server images during tests to validate different language implementations
+
+version: '3.8'
+
+services:
+  # Bun server implementation (default)
+  app:
+    build:
+      context: ./servers/bun
+      dockerfile: Dockerfile
+    image: observability-server:bun
+    environment:
+      - SERVER_TYPE=bun
+      - NODE_ENV=development
+    volumes:
+      - ./servers/bun:/app
+      - /app/node_modules
+
+  # Node.js server implementation
+  app-node:
+    build:
+      context: ./servers/node
+      dockerfile: Dockerfile
+    image: observability-server:node
+    ports:
+      - "${APP_PORT-8091}:4000"
+    environment:
+      - SERVER_TYPE=node
+      - NODE_ENV=development
+    volumes:
+      - ./servers/node:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    profiles:
+      - node
+
+  # Python server implementation  
+  app-python:
+    build:
+      context: ./servers/python
+      dockerfile: Dockerfile
+    image: observability-server:python
+    ports:
+      - "${APP_PORT-8092}:4000"
+    environment:
+      - SERVER_TYPE=python
+      - PYTHON_ENV=development
+    volumes:
+      - ./servers/python:/app
+    depends_on:
+      - db
+    profiles:
+      - python
+
+  # Go server implementation
+  app-go:
+    build:
+      context: ./servers/go
+      dockerfile: Dockerfile
+    image: observability-server:go
+    ports:
+      - "${APP_PORT-8093}:4000"
+    environment:
+      - SERVER_TYPE=go
+      - GO_ENV=development
+    volumes:
+      - ./servers/go:/app
+    depends_on:
+      - db
+    profiles:
+      - go
+
+  # Rust server implementation
+  app-rust:
+    build:
+      context: ./servers/rust
+      dockerfile: Dockerfile
+    image: observability-server:rust
+    ports:
+      - "${APP_PORT-8094}:4000"
+    environment:
+      - SERVER_TYPE=rust
+      - RUST_ENV=development
+    volumes:
+      - ./servers/rust:/app
+    depends_on:
+      - db
+    profiles:
+      - rust
+
+  # .NET server implementation
+  app-dotnet:
+    build:
+      context: ./servers/dotnet
+      dockerfile: Dockerfile
+    image: observability-server:dotnet
+    ports:
+      - "${APP_PORT-8095}:4000"
+    environment:
+      - SERVER_TYPE=dotnet
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./servers/dotnet:/app
+    depends_on:
+      - db
+    profiles:
+      - dotnet
+
+# Usage examples:
+# Default (Bun): docker-compose up
+# Node.js: docker-compose --profile node up app-node
+# Python: docker-compose --profile python up app-python
+# Go: docker-compose --profile go up app-go
+# Rust: docker-compose --profile rust up app-rust
+# .NET: docker-compose --profile dotnet up app-dotnet
+
+# For testing, you can run specific server implementations:
+# docker-compose --profile node up app-node db
+# docker-compose --profile python up app-python db

@@ -1,0 +1,16 @@
+{
+  "base_port": 4000,
+  "next_port": 4002,
+  "assignments": {
+    "postgres": {
+      "port": 4000,
+      "purpose": "PostgreSQL Database",
+      "assigned_at": "2025-07-15T01:40:37.582733"
+    },
+    "mongo": {
+      "port": 4001,
+      "purpose": "MongoDB Database",
+      "assigned_at": "2025-07-15T01:40:37.583032"
+    }
+  }
+}

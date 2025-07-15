@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    image: your_server_image
+    ports:
+      - "${APP_PORT-8090}:4000"
+    environment:
+      - ENV_VAR=value
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    ports:
+      - "${POSTGRES_PORT-8091}:5432"
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+

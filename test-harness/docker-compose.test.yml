@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database for testing
+  postgres:
+    image: postgres:15
+    container_name: test-postgres
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "${POSTGRES_PORT-8091}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d testdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test-network
+
+  # MongoDB database for testing
+  mongo:
+    image: mongo:7.0
+    container_name: test-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: testdb
+    ports:
+      - "${MONGO_PORT-8092}:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test-network
+
+  # Test harness container
+  test-harness:
+    build: .
+    container_name: test-harness
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    environment:
+      - SERVER_HOST=localhost
+      - SERVER_PORT=${HTTP_SERVER_PORT}
+      - SERVER_PROTOCOL=http
+      - WS_PROTOCOL=ws
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - MONGO_HOST=mongo
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=testdb
+      - SQLITE_PATH=/tmp/test.db
+      - REQUEST_TIMEOUT=30
+      - WEBSOCKET_TIMEOUT=30
+    volumes:
+      - ./reports:/app/reports
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["python", "-m", "pytest", "-v", "--tb=short"]
+
+volumes:
+  postgres_data:
+  mongo_data:
+
+networks:
+  test-network:
+    driver: bridge

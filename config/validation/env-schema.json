@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Environment Variables Schema",
+  "type": "object",
+  "properties": {
+    "ANTHROPIC_API_KEY": {"type": "string"},
+    "OPENAI_API_KEY": {"type": "string"},
+    "ELEVENLABS_API_KEY": {"type": "string"},
+    "PORT": {"type": "string", "pattern": "^\\d{1,5}$"},
+    "NODE_ENV": {"type": "string", "enum": ["development", "production", "test"]},
+    "DATABASE_PATH": {"type": "string"},
+    "POSTGRES_URL": {"type": "string"},
+    "CORS_ORIGINS": {"type": "string"},
+    "API_KEY": {"type": "string"},
+    "JWT_SECRET": {"type": "string"},
+    "RATE_LIMIT_WINDOW_MS": {"type": "string", "pattern": "^\\d+$"},
+    "RATE_LIMIT_MAX_REQUESTS": {"type": "string", "pattern": "^\\d+$"},
+    "WS_HEARTBEAT_INTERVAL": {"type": "string", "pattern": "^\\d+$"},
+    "LOG_LEVEL": {"type": "string", "enum": ["error", "warn", "info", "debug"]},
+    "VITE_MAX_EVENTS_TO_DISPLAY": {"type": "string", "pattern": "^\\d+$"},
+    "VITE_WEBSOCKET_URL": {"type": "string"}
+  },
+  "required": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY", "ELEVENLABS_API_KEY", "PORT", "NODE_ENV"],
+  "additionalProperties": false
+}
