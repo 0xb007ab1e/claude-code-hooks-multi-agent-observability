@@ -12,6 +12,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Set BUN variable for CI portability
+BUN="${BUN:-$(command -v bun || echo ~/.bun/bin/bun)}"
+
 # Get project root (parent of scripts directory)
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 

@@ -5,6 +5,9 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Get the project root directory (parent of scripts)
 PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
+# Set BUN variable for CI portability
+BUN="${BUN:-$(command -v bun || echo ~/.bun/bin/bun)}"
+
 # Source environment variables
 if [ -f "$PROJECT_ROOT/config/.env" ]; then
     source "$PROJECT_ROOT/config/.env"
@@ -43,7 +46,7 @@ fi
 # Start server
 echo -e "\n${GREEN}Starting server on port 4000...${NC}"
 cd "$PROJECT_ROOT/apps/server"
-bun run dev &
+$BUN run dev &
 SERVER_PID=$!
 
 # Wait for server to be ready
@@ -59,7 +62,7 @@ done
 # Start client
 echo -e "\n${GREEN}Starting client on port 5173...${NC}"
 cd "$PROJECT_ROOT/apps/client"
-bun run dev &
+$BUN run dev &
 CLIENT_PID=$!
 
 # Wait for client to be ready

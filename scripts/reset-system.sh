@@ -9,6 +9,9 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+# Set BUN variable for CI portability
+BUN="${BUN:-$(command -v bun || echo ~/.bun/bin/bun)}"
+
 # Get the directory of this script
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Get the project root directory (parent of scripts)
@@ -81,5 +84,5 @@ fi
 echo -e "\n${GREEN}🎉 System reset complete!${NC}"
 echo -e "\nTo start fresh:"
 echo "1. Run ./scripts/start-system.sh to start both server and client"
-echo "2. Or manually: cd apps/server && bun run dev"
-echo "3. And: cd apps/client && bun run dev"
+echo "2. Or manually: cd apps/server && $BUN run dev"
+echo "3. And: cd apps/client && $BUN run dev"
