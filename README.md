@@ -30,22 +30,48 @@ This command will:
 - Install required dependencies
 - Start the development environment with tmux
 
-## 🔑 How to Set/Change API Keys
+## 🔑 Environment Configuration
 
-1. Copy the sample environment file:
+### Quick Setup
+
+1. **Copy the sample environment file:**
    ```bash
    cp .env.sample .env
    ```
 
-2. Edit `.env` with your API keys:
+2. **Edit `.env` with your API keys:**
    ```bash
-   ANTHROPIC_API_KEY=your_actual_key_here
-   OPENAI_API_KEY=optional_key_here
-   ELEVENLABS_API_KEY=optional_key_here
+   # Required
+   ANTHROPIC_API_KEY=your_actual_anthropic_key_here
    ENGINEER_NAME=Your Name
+   
+   # Optional
+   OPENAI_API_KEY=your_actual_openai_key_here
+   ELEVENLABS_API_KEY=your_actual_elevenlabs_key_here
    ```
 
-3. Keys will be automatically loaded when you run `./scripts/start_env.sh`
+3. **Keys will be automatically loaded when you run:**
+   ```bash
+   ./scripts/start_env.sh
+   ```
+
+### Complete Environment Variables
+
+| Variable | Required | Description | Default |
+|----------|----------|-------------|----------|
+| `ANTHROPIC_API_KEY` | ✅ | Anthropic Claude API key for agent functionality | - |
+| `ENGINEER_NAME` | ✅ | User identification for logging and session tracking | - |
+| `OPENAI_API_KEY` | ❌ | OpenAI API key for multi-model support | - |
+| `ELEVENLABS_API_KEY` | ❌ | ElevenLabs API key for audio features | - |
+| `ANTHROPIC_MODEL` | ❌ | Default Anthropic model | `claude-3-5-haiku-20241022` |
+| `OPENAI_MODEL` | ❌ | Default OpenAI model | `gpt-4.1-nano` |
+| `OPENAI_TTS_MODEL` | ❌ | OpenAI text-to-speech model | `gpt-4o-mini-tts` |
+| `OPENAI_TTS_VOICE` | ❌ | OpenAI TTS voice selection | `nova` |
+| `ELEVENLABS_MODEL` | ❌ | ElevenLabs TTS model | `eleven_turbo_v2_5` |
+| `ELEVENLABS_VOICE_ID` | ❌ | ElevenLabs voice ID | `WejK3H1m7MI9CHnIjW9K` |
+| `CLAUDE_HOOKS_LOG_DIR` | ❌ | Directory for log files | `logs` |
+
+**⚠️ Security Warning:** Never commit `.env` files to version control! The `.env` file contains sensitive API keys and credentials. Always use `.env.sample` as a template.
 
 ## 🔄 Updating Dependencies
 
@@ -233,9 +259,18 @@ Copy `.env.sample` to `.env` in the project root and fill in your API keys:
 - `ENGINEER_NAME` – Your name (for logging/identification)
 - `OPENAI_API_KEY` – OpenAI API key (optional)
 - `ELEVENLABS_API_KEY` – ElevenLabs API key (optional)
+- `ANTHROPIC_MODEL` – Default Anthropic model (optional)
+- `OPENAI_MODEL` – Default OpenAI model (optional)
+- `OPENAI_TTS_MODEL` – OpenAI text-to-speech model (optional)
+- `OPENAI_TTS_VOICE` – OpenAI TTS voice selection (optional)
+- `ELEVENLABS_MODEL` – ElevenLabs TTS model (optional)
+- `ELEVENLABS_VOICE_ID` – ElevenLabs voice ID (optional)
+- `CLAUDE_HOOKS_LOG_DIR` – Directory for log files (optional)
 
 **Client** (`.env` file in `apps/client/.env`):
 - `VITE_MAX_EVENTS_TO_DISPLAY=100` – Maximum events to show (removes oldest when exceeded)
+
+**📚 For complete environment variable documentation and security best practices, see [docs/security.md](docs/security.md)**
 
 ### Server Ports
 
@@ -251,10 +286,37 @@ Copy `.env.sample` to `.env` in the project root and fill in your API keys:
 
 ## 🛡️ Security Features
 
-- Blocks dangerous commands (`rm -rf`, etc.)
-- Prevents access to sensitive files (`.env`, private keys)
-- Validates all inputs before execution
-- No external dependencies for core functionality
+- **Command Filtering**: Blocks dangerous commands (`rm -rf`, etc.)
+- **File Protection**: Prevents access to sensitive files (`.env`, private keys)
+- **Input Validation**: Validates all inputs before execution
+- **Rate Limiting**: Protects against abuse with connection and request limits
+- **Environment Isolation**: No external dependencies for core functionality
+- **Secret Management**: Comprehensive environment variable protection
+
+### 🔐 Security Best Practices
+
+**⚠️ Critical Security Warnings:**
+- **NEVER commit `.env` files** to version control
+- **Use strong, unique API keys** and rotate them regularly
+- **Install `git-secrets`** to prevent accidental secret commits
+- **Review commits** before pushing to ensure no secrets are included
+
+**Recommended Security Setup:**
+```bash
+# Install git-secrets (macOS)
+brew install git-secrets
+
+# Configure for this repository
+git secrets --install
+git secrets --register-aws
+
+# Add custom patterns for API keys
+git secrets --add 'sk-ant-api03-[A-Za-z0-9_-]{95}'
+git secrets --add 'sk-proj-[A-Za-z0-9_-]{20,}'
+git secrets --add 'sk_[A-Za-z0-9_-]{32,}'
+```
+
+**📚 For complete security documentation, see [docs/security.md](docs/security.md)**
 
 ## 📝 License
 

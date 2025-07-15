@@ -1,0 +1,50 @@
+project_root: /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability
+session_name: claude-dev-env
+windows:
+- layout: main-horizontal
+  name: main
+  panes:
+  - commands:
+    - cd /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability
+    - code .
+    - "echo '\U0001F680 VS Code launched for Claude Code Hooks project'"
+    name: vs-code
+  - commands:
+    - cd /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability
+    - '# Watch for changes in hooks and restart processes'
+    - "echo '\U0001F441\uFE0F  Watching hooks directory for changes...'"
+    - while true; do
+    - '  echo ''$(date): Hooks watcher active - monitoring .claude/hooks/'''
+    - '  sleep 10'
+    - done
+    name: hooks-watch
+- layout: even-horizontal
+  name: servers
+  panes:
+  - commands:
+    - cd /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/apps/server
+    - "echo '\U0001F5A5\uFE0F  Starting backend server...'"
+    - bun run dev
+    name: backend-server
+  - commands:
+    - cd /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability/apps/client
+    - "echo '\U0001F3A8 Starting client development server...'"
+    - bun run dev
+    name: client-dev
+- layout: even-vertical
+  name: hooks-monitor
+  panes:
+  - commands:
+    - cd /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability
+    - "echo '\U0001F50C Claude Code Hooks CLI Monitor'"
+    - "echo '\U0001F4CA This pane monitors hook events and forwards to observability\
+      \ system'"
+    - "echo '\U0001F680 Starting hooks proxy with VS Code integration on port 8081...'"
+    - node scripts/hooks-proxy.js
+    name: hooks-cli
+  - commands:
+    - cd /home/b007ab1e/_src/claude/repos/claude-code-hooks-multi-agent-observability
+    - "echo '\U0001F4CB System Logs and Output'"
+    - "echo '\u26A1 Real-time monitoring of Claude agent activity'"
+    - tail -f /tmp/claude-hooks-*.log 2>/dev/null || echo 'No active log files yet'
+    name: logs

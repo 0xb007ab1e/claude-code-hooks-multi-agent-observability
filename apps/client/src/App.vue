@@ -97,9 +97,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useWebSocket } from './composables/useWebSocket';
-import { useThemes } from './composables/useThemes';
 import EventTimeline from './components/EventTimeline.vue';
 import FilterPanel from './components/FilterPanel.vue';
 import StickScrollButton from './components/StickScrollButton.vue';
@@ -107,10 +106,7 @@ import LivePulseChart from './components/LivePulseChart.vue';
 import ThemeManager from './components/ThemeManager.vue';
 
 // WebSocket connection
-const { events, isConnected, error } = useWebSocket('ws://localhost:4000/stream');
-
-// Theme management
-const { state: themeState } = useThemes();
+const { events, isConnected, error } = useWebSocket(import.meta.env.VITE_WEBSOCKET_URL || 'ws://localhost:4000/stream');
 
 // Filters
 const filters = ref({
@@ -125,11 +121,11 @@ const showThemeManager = ref(false);
 const showFilters = ref(false);
 
 // Computed properties
-const isDark = computed(() => {
-  return themeState.value.currentTheme === 'dark' || 
-         (themeState.value.isCustomTheme && 
-          themeState.value.customThemes.find(t => t.id === themeState.value.currentTheme)?.name.includes('dark'));
-});
+// const isDark = computed(() => {
+//   return themeState.value.currentTheme === 'dark' || 
+//          (themeState.value.isCustomTheme && 
+//           themeState.value.customThemes.find(t => t.id === themeState.value.currentTheme)?.name.includes('dark'));
+// });
 
 // Debug handler for theme manager
 const handleThemeManagerClick = () => {

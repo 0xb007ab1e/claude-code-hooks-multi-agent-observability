@@ -65,9 +65,11 @@ async def main():
 
         try:
             # Generate and stream audio using OpenAI TTS
+            model = os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts")
+            voice = os.getenv("OPENAI_TTS_VOICE", "nova")
             async with openai.audio.speech.with_streaming_response.create(
-                model="gpt-4o-mini-tts",
-                voice="nova",
+                model=model,
+                voice=voice,
                 input=text,
                 instructions="Speak in a cheerful, positive yet professional tone.",
                 response_format="mp3",

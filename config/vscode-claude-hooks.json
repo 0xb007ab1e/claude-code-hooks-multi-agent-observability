@@ -1,0 +1,81 @@
+{
+  "name": "claude-code-hooks-integration",
+  "displayName": "Claude Code Hooks Integration",
+  "description": "Integrates Claude Code hooks with VS Code output channel",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claude-hooks.connect",
+        "title": "Connect to Claude Hooks Proxy",
+        "category": "Claude Hooks"
+      },
+      {
+        "command": "claude-hooks.disconnect",
+        "title": "Disconnect from Claude Hooks Proxy",
+        "category": "Claude Hooks"
+      },
+      {
+        "command": "claude-hooks.showOutput",
+        "title": "Show Claude Hooks Output",
+        "category": "Claude Hooks"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Code Hooks",
+      "properties": {
+        "claude-hooks.proxyUrl": {
+          "type": "string",
+          "default": "http://localhost:8081/events",
+          "description": "URL for the Claude hooks proxy server"
+        },
+        "claude-hooks.autoConnect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically connect to hooks proxy on startup"
+        },
+        "claude-hooks.logLevel": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info",
+          "description": "Log level for hooks output"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.60.0",
+    "@types/node": "^14.x",
+    "typescript": "^4.4.4"
+  },
+  "connection": {
+    "endpoint": "http://localhost:8080/events",
+    "method": "Server-Sent Events",
+    "description": "This configuration allows VS Code to connect to the Claude hooks proxy for real-time event monitoring"
+  },
+  "usage": {
+    "instructions": [
+      "1. Ensure the hooks proxy is running (node scripts/hooks-proxy.js)",
+      "2. Open VS Code in the project directory",
+      "3. The extension should auto-connect to the proxy",
+      "4. View hook events in the 'Claude Code' output channel",
+      "5. Use Ctrl+Shift+P -> 'Show Claude Hooks Output' to view events"
+    ]
+  },
+  "sample_code": {
+    "extension_main": "// Sample VS Code extension code\n// File: extension.js\nconst vscode = require('vscode');\n\nfunction activate(context) {\n    let outputChannel = vscode.window.createOutputChannel('Claude Code');\n    let eventSource;\n    \n    function connectToProxy() {\n        const proxyUrl = vscode.workspace.getConfiguration('claude-hooks').get('proxyUrl');\n        \n        // Use fetch API for Server-Sent Events\n        fetch(proxyUrl)\n            .then(response => {\n                if (!response.ok) throw new Error('Failed to connect to proxy');\n                return response.body.getReader();\n            })\n            .then(reader => {\n                function read() {\n                    return reader.read().then(({ done, value }) => {\n                        if (done) return;\n                        \n                        const chunk = new TextDecoder().decode(value);\n                        const lines = chunk.split('\\n');\n                        \n                        for (const line of lines) {\n                            if (line.startsWith('data: ')) {\n                                try {\n                                    const data = JSON.parse(line.substring(6));\n                                    outputChannel.appendLine(`[${data.timestamp}] ${data.message}`);\n                                } catch (e) {\n                                    // Ignore parsing errors\n                                }\n                            }\n                        }\n                        \n                        return read();\n                    });\n                }\n                return read();\n            })\n            .catch(error => {\n                outputChannel.appendLine(`Error connecting to hooks proxy: ${error.message}`);\n            });\n    }\n    \n    // Auto-connect if enabled\n    if (vscode.workspace.getConfiguration('claude-hooks').get('autoConnect')) {\n        connectToProxy();\n    }\n    \n    // Register commands\n    let connectCmd = vscode.commands.registerCommand('claude-hooks.connect', connectToProxy);\n    let showOutputCmd = vscode.commands.registerCommand('claude-hooks.showOutput', () => {\n        outputChannel.show();\n    });\n    \n    context.subscriptions.push(connectCmd, showOutputCmd, outputChannel);\n}\n\nfunction deactivate() {}\n\nmodule.exports = { activate, deactivate };"
+  }
+}

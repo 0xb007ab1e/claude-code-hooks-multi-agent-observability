@@ -1,34 +1,32 @@
-# dependencies (bun install)
-node_modules
+# Server-specific .gitignore
+# Note: Most patterns are handled by the root .gitignore
 
-# output
-out
-dist
-*.tgz
+# Server build outputs
+/out/
+/dist/
 
-# code coverage
-coverage
-*.lcov
+# Server-specific database files
+events.db*
+observability.db*
+*.sqlite*
+*.db*
 
-# logs
-logs
+# Server logs
+logs/
+*.log
 _.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
-# dotenv environment variable files
-.env
+# Server environment files (in addition to root patterns)
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
-.env.local
 
-# caches
-.eslintcache
-.cache
-*.tsbuildinfo
+# Server-specific caches
+.bun/
+*.tgz
 
-# IntelliJ based IDEs
-.idea
-
-# Finder (MacOS) folder config
-.DS_Store
+# Server testing
+coverage/
+*.lcov

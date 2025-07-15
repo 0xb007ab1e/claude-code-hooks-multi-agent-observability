@@ -1,6 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.8"
+# dependencies = [
+#     "python-dotenv",
+# ]
 # ///
 
 """
@@ -9,6 +12,12 @@ Constants for Claude Code Hooks.
 
 import os
 from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv is optional
 
 # Base directory for all logs
 # Default is 'logs' in the current working directory

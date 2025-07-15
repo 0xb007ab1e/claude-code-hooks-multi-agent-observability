@@ -1,0 +1,74 @@
+# GitLeaks configuration file
+# This file defines rules for detecting secrets in the codebase
+
+[extend]
+# Use the default GitLeaks rules
+useDefault = true
+
+# Global allowlist for false positives
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(?:key|api|token|secret|password)[[:space:]]*[:=][[:space:]]*['""]?[0-9a-zA-Z]{32,}['""]?'''
+keywords = ["key", "api", "token", "secret", "password"]
+
+# File-specific allowlists
+[allowlist]
+description = "Allowlist for false positives"
+files = [
+    '''\.env\.sample$''',
+    '''\.env\.example$''',
+    '''\.env\.template$''',
+    '''test/.*''',
+    '''tests/.*''',
+    '''spec/.*''',
+    '''__tests__/.*''',
+    '''\.md$''',
+    '''\.txt$''',
+    '''\.json$''',
+    '''\.yml$''',
+    '''\.yaml$''',
+]
+
+# Commit-specific allowlists
+commits = [
+    # Add specific commit hashes here for one-time allowlisting
+]
+
+# Path-specific allowlists
+paths = [
+    '''\.git/.*''',
+    '''node_modules/.*''',
+    '''vendor/.*''',
+    '''\.venv/.*''',
+    '''venv/.*''',
+    '''__pycache__/.*''',
+    '''\.pytest_cache/.*''',
+    '''\.coverage''',
+    '''coverage/.*''',
+    '''build/.*''',
+    '''dist/.*''',
+    '''target/.*''',
+]
+
+# Regex patterns to ignore
+regexes = [
+    # Example placeholders and dummy values
+    '''(?i)(password|secret|key|token)[[:space:]]*[:=][[:space:]]*['""]?(example|test|dummy|placeholder|your_key_here|change_me|replace_me)['""]?''',
+    # UUIDs that are not secrets
+    '''[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}''',
+    # Common false positives
+    '''(?i)(localhost|127\.0\.0\.1|0\.0\.0\.0)''',
+    # Template variables
+    '''\{\{[^}]+\}\}''',
+    '''<%[^>]+%>''',
+    # Environment variable references
+    '''\$\{[^}]+\}''',
+    '''\$[A-Z_][A-Z0-9_]*''',
+]
+
+# Entropy detection settings
+[entropy]
+min = 3.5
+max = 8.0
+group = 1

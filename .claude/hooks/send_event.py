@@ -21,6 +21,12 @@ import urllib.error
 from datetime import datetime
 from utils.summarizer import generate_event_summary
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv is optional
+
 def send_event_to_server(event_data, server_url='http://localhost:4000/events'):
     """Send event data to the observability server."""
     try:

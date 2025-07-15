@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Get the directory of this script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Get the project root directory (parent of scripts)
+PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+# Source environment variables
+if [ -f "$PROJECT_ROOT/config/.env" ]; then
+    source "$PROJECT_ROOT/config/.env"
+fi
+
 echo "🚀 Starting Multi-Agent Observability System"
 echo "==========================================="
 
@@ -8,11 +18,6 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-
-# Get the directory of this script
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# Get the project root directory (parent of scripts)
-PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
 # Function to check if port is in use
 check_port() {

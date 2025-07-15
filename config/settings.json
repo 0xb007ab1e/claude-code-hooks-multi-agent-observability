@@ -1,0 +1,4 @@
+{
+  "claude.apiKey": "${env:CLAUDE_API_KEY}",
+  "claude.model": "claude-3-opus-20240229"
+}

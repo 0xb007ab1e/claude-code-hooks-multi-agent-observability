@@ -1,4 +1,60 @@
-# Python
+# ===========================
+# COMPREHENSIVE .GITIGNORE
+# ===========================
+
+# ===== ENVIRONMENT VARIABLES & SECRETS =====
+# Ignore all environment files everywhere
+.env
+.env.*
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Exception: keep sample environment files
+!.env.sample
+!.env.example
+!.env.template
+
+# Additional secret files
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# ===== DATABASE FILES =====
+# SQLite databases and WAL files
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Specific database files
+events.db*
+observability.db*
+
+# ===== LOGS & OUTPUT =====
+# Log files
+*.log
+logs/
+!logs/.gitkeep
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Output directories
+output/
+outputs/
+results/
+
+# ===== PYTHON =====
 __pycache__/
 *.py[cod]
 *$py.class
@@ -21,32 +77,41 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-.pytest_cache/
-.coverage
-.hypothesis/
-.tox/
-.nox/
+
+# Python virtual environments
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Python testing and caching
+.pytest_cache/
+.coverage
+.hypothesis/
+.tox/
+.nox/
 .mypy_cache/
 .dmypy.json
 dmypy.json
 .pyre/
 .pytype/
 .ruff_cache/
+
+# Python package management
 pdm.lock
 .pdm.toml
 __pypackages__/
+pipenv.lock
+Pipfile.lock
+poetry.lock
+poetry.toml
+
+# Python-specific
 celerybeat-schedule
 celerybeat.pid
 *.sage.py
-.env
-.env.*
-!.env.sample
 .spyderproject
 .spyproject
 .ropeproject
@@ -54,42 +119,47 @@ instance/
 .webassets-cache
 .scrapy
 docs/_build/
-target/
 profile_default/
 ipython_config.py
 .python-version
-pipenv.lock
-Pipfile.lock
-poetry.lock
-poetry.toml
 
-# TypeScript / JavaScript / Node
+# ===== JAVASCRIPT/TYPESCRIPT/NODE =====
+# Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-*.tsbuildinfo
-.npm
-.eslintcache
-.stylelintcache
-.yarn-integrity
-.cache
-.parcel-cache
-.next/
-out/
-.nuxt/
+
+# Build outputs
 dist/
-.cache/
+build/
+out/
+target/
+dist-ssr/
+.next/
+.nuxt/
 .vuepress/dist
-.temp
 .docusaurus
 .serverless/
 .fusebox/
 .dynamodb/
+*.min.js
+*.min.css
+
+# Caching
+.cache/
+.parcel-cache/
+.sass-cache/
+.eslintcache
+.stylelintcache
+.yarn-integrity
+.npm
+*.tsbuildinfo
+.temp
 .tern-port
-.vscode-test
+
+# Package management
+bun.lockb
+.bun/
+
+# Node.js
 *.pid
 *.seed
 *.pid.lock
@@ -101,87 +171,89 @@ bower_components
 .lock-wscript
 jspm_packages/
 typings/
-*.log
-logs/
-!logs/.gitkeep
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-.DS_Store
-Thumbs.db
 
-# Bun
-bun.lockb
-.bun/
-
-# Vue.js
-.DS_Store
-node_modules/
-/dist/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Test outputs
 /test/unit/coverage/
 /test/e2e/reports/
 selenium-debug.log
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.env.local
-.env.*.local
 
-# IDEs and editors
-.idea/
+# ===== IDE & EDITOR FILES =====
+# VSCode
 .vscode/
+.vscode-test/
+!.vscode/extensions.json
+
+# IntelliJ/WebStorm
+.idea/
+
+# Sublime Text
+*.sublime-workspace
+
+# Vim
 *.swp
 *.swo
 *~
+
+# Eclipse
 .project
 .classpath
 .c9/
 *.launch
 .settings/
-*.sublime-workspace
-.history
 
-# OS
+# Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Other editors
+.history/
+
+# ===== TESTING & CI CACHE =====
+# Testing frameworks
+.pytest_cache/
+.coverage
+htmlcov/
+.phpunit.result.cache
+.nyc_output/
+*.lcov
+coverage/
+
+# CI/CD caches
+.github/
+.circleci/
+.travis.yml
+.gitlab-ci.yml
+
+# ===== OS FILES =====
+# macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+
+# Windows
 ehthumbs.db
 Thumbs.db
-*.bak
 
-# Testing
-coverage/
-.nyc_output/
-*.lcov
-.coverage
-htmlcov/
-.pytest_cache/
-.phpunit.result.cache
+# Linux
+.directory
 
-# Build outputs
-dist/
-build/
-out/
-target/
-*.min.js
-*.min.css
-
-# Temporary files
+# ===== TEMPORARY FILES =====
 *.tmp
 *.temp
 .tmp/
 .temp/
 tmp/
 temp/
+*.bak
+*.backup
+*.old
 
-# Package files
+# ===== PACKAGE FILES =====
 *.jar
 *.war
 *.nar
@@ -189,65 +261,17 @@ temp/
 *.zip
 *.tar.gz
 *.rar
+*.tgz
 
-# Database
-*.sqlite
-*.sqlite3
-*.db
-*.db-shm
-*.db-wal
-
-# Server database files
-apps/server/events.db
-apps/server/events.db-shm
-apps/server/events.db-wal
-apps/server/observability.db
-apps/server/observability.db-shm
-apps/server/observability.db-wal
-
-# Logs (but preserve logs directory structure)
-logs/*
-!logs/.gitkeep
-*.log
-
-# Security
-.env
-.env.*
-!.env.sample
-*.key
-*.pem
-*.p12
-*.pfx
-secrets/
-credentials/
-
-# Additional ignores
-node_modules/
-venv/
-.env
-
-# Dependency directories
+# ===== DEPENDENCY DIRECTORIES =====
 vendor/
 packages/
 
-# Output directories
-output/
-outputs/
-results/
-
-# Cache directories
-.cache/
-.sass-cache/
-.parcel-cache/
-
-# Misc
-*.bak
-*.backup
-*.old
-.history/
+# ===== VERSION CONTROL =====
 .svn/
 CVS/
+
+# ===== PROJECT SPECIFIC =====
 claude-output.json
 .claude/commands/feature.md
-
 specs/

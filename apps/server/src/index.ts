@@ -10,8 +10,10 @@ import {
   importTheme,
   getThemeStats 
 } from './theme';
+import { config, validateRequiredConfig } from './config';
 
-// Initialize database
+// Validate configuration and initialize database
+validateRequiredConfig();
 initDatabase();
 
 // Store WebSocket clients
@@ -19,14 +21,18 @@ const wsClients = new Set<any>();
 
 // Create Bun server with HTTP and WebSocket support
 const server = Bun.serve({
-  port: 4000,
+  port: config.PORT,
   
   async fetch(req: Request) {
     const url = new URL(req.url);
     
     // Handle CORS
+    const allowedOrigins = Array.isArray(config.CORS_ORIGINS) ? config.CORS_ORIGINS : [config.CORS_ORIGINS];
+    const requestOrigin = req.headers.get('origin');
+    const corsOrigin = allowedOrigins.includes('*') || allowedOrigins.includes(requestOrigin || '') ? (requestOrigin || '*') : 'null';
+    
     const headers = {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': corsOrigin,
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
@@ -39,7 +45,7 @@ const server = Bun.serve({
     // POST /events - Receive new events
     if (url.pathname === '/events' && req.method === 'POST') {
       try {
-        const event: HookEvent = await req.json();
+        const event = await req.json() as HookEvent;
         
         // Validate required fields
         if (!event.source_app || !event.session_id || !event.hook_event_type || !event.payload) {
@@ -217,6 +223,16 @@ const server = Bun.serve({
     if (url.pathname.match(/^\/api\/themes\/[^\/]+\/export$/) && req.method === 'GET') {
       const id = url.pathname.split('/')[3];
       
+      if (!id) {
+        return new Response(JSON.stringify({ 
+          success: false, 
+          error: 'Theme ID is required' 
+        }), {
+          status: 400,
+          headers: { ...headers, 'Content-Type': 'application/json' }
+        });
+      }
+      
       const result = await exportThemeById(id);
       if (!result.success) {
         const status = result.error?.includes('not found') ? 404 : 400;
@@ -299,11 +315,6 @@ const server = Bun.serve({
     
     close(ws) {
       console.log('WebSocket client disconnected');
-      wsClients.delete(ws);
-    },
-    
-    error(ws, error) {
-      console.error('WebSocket error:', error);
       wsClients.delete(ws);
     }
   }

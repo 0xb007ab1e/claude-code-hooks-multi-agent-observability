@@ -62,10 +62,12 @@ def main():
         
         try:
             # Generate and play audio directly
+            voice_id = os.getenv("ELEVENLABS_VOICE_ID", "WejK3H1m7MI9CHnIjW9K")
+            model_id = os.getenv("ELEVENLABS_MODEL", "eleven_turbo_v2_5")
             audio = elevenlabs.text_to_speech.convert(
                 text=text,
-                voice_id="WejK3H1m7MI9CHnIjW9K",  # Specified voice
-                model_id="eleven_turbo_v2_5",
+                voice_id=voice_id,
+                model_id=model_id,
                 output_format="mp3_44100_128",
             )
             

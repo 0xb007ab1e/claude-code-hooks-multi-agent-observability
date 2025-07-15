@@ -1,24 +1,26 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Client-specific .gitignore
+# Note: Most patterns are handled by the root .gitignore
 
-node_modules
-dist
-dist-ssr
+# Vite specific
+.vite/
+
+# Client build outputs
+/dist/
+/dist-ssr/
+
+# Client environment files (in addition to root patterns)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Client-specific logs
 *.local
 
-# Editor directories and files
+# Client testing
+/test/unit/coverage/
+/test/e2e/reports/
+
+# Client IDE overrides (if needed)
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?

@@ -1,10 +1,11 @@
 import { Database } from 'bun:sqlite';
 import type { HookEvent, FilterOptions, Theme, ThemeSearchQuery } from './types';
+import { config } from './config';
 
 let db: Database;
 
 export function initDatabase(): void {
-  db = new Database('events.db');
+  db = new Database(config.DATABASE_PATH);
   
   // Enable WAL mode for better concurrent performance
   db.exec('PRAGMA journal_mode = WAL');
@@ -191,27 +192,26 @@ export function insertTheme(theme: Theme): Theme {
 
 export function updateTheme(id: string, updates: Partial<Theme>): boolean {
   const allowedFields = ['displayName', 'description', 'colors', 'isPublic', 'updatedAt', 'tags'];
-  const setClause = Object.keys(updates)
-    .filter(key => allowedFields.includes(key))
-    .map(key => `${key} = ?`)
-    .join(', ');
+  const validKeys = Object.keys(updates)
+    .filter(key => allowedFields.includes(key) && updates[key as keyof Theme] !== undefined);
   
-  if (!setClause) return false;
+  if (validKeys.length === 0) return false;
   
-  const values = Object.keys(updates)
-    .filter(key => allowedFields.includes(key))
-    .map(key => {
-      if (key === 'colors' || key === 'tags') {
-        return JSON.stringify(updates[key as keyof Theme]);
-      }
-      if (key === 'isPublic') {
-        return updates[key as keyof Theme] ? 1 : 0;
-      }
-      return updates[key as keyof Theme];
-    });
+  const setClause = validKeys.map(key => `${key} = ?`).join(', ');
+  
+  const values = validKeys.map(key => {
+    const value = updates[key as keyof Theme];
+    if (key === 'colors' || key === 'tags') {
+      return JSON.stringify(value);
+    }
+    if (key === 'isPublic') {
+      return value ? 1 : 0;
+    }
+    return value;
+  });
   
   const stmt = db.prepare(`UPDATE themes SET ${setClause} WHERE id = ?`);
-  const result = stmt.run(...values, id);
+  const result = stmt.run(...(values as any[]), id);
   
   return result.changes > 0;
 }

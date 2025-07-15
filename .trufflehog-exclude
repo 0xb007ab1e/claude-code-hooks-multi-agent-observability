@@ -1,0 +1,69 @@
+# TruffleHog exclude paths file
+# Each line is a regex pattern for files/paths to exclude from scanning
+
+# Version control and dependencies
+\.git/.*
+node_modules/.*
+vendor/.*
+venv/.*
+\.venv/.*
+__pycache__/.*
+\.pytest_cache/.*
+
+# Build and distribution directories
+build/.*
+dist/.*
+target/.*
+\.next/.*
+\.nuxt/.*
+\.cache/.*
+\.tmp/.*
+tmp/.*
+logs/.*
+coverage/.*
+
+# Lock files and binaries
+.*\.lock$
+.*\.log$
+.*\.tmp$
+.*\.cache$
+.*\.min\.js$
+.*\.min\.css$
+package-lock\.json$
+yarn\.lock$
+bun\.lock$
+Pipfile\.lock$
+poetry\.lock$
+go\.sum$
+
+# Assets and media files
+.*\.woff$
+.*\.woff2$
+.*\.ttf$
+.*\.eot$
+.*\.ico$
+.*\.png$
+.*\.jpg$
+.*\.jpeg$
+.*\.gif$
+.*\.svg$
+.*\.pdf$
+.*\.zip$
+.*\.tar\.gz$
+.*\.exe$
+.*\.dll$
+.*\.so$
+.*\.dylib$
+
+# Test and documentation files
+test/.*
+tests/.*
+spec/.*
+__tests__/.*
+.*\.test\..*
+.*\.spec\..*
+.*\.md$
+.*\.txt$
+.*\.sample$
+.*\.example$
+.*\.template$

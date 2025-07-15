@@ -33,8 +33,9 @@ def prompt_llm(prompt_text):
 
         client = anthropic.Anthropic(api_key=api_key)
 
+        model = os.getenv("ANTHROPIC_MODEL", "claude-3-5-haiku-20241022")
         message = client.messages.create(
-            model="claude-3-5-haiku-20241022",  # Fastest Anthropic model
+            model=model,
             max_tokens=100,
             temperature=0.7,
             messages=[{"role": "user", "content": prompt_text}],

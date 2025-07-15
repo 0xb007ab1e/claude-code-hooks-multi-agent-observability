@@ -1,0 +1,57 @@
+{
+  "name": "claude-code-hooks-multi-agent-observability",
+  "version": "1.0.0",
+  "description": "Real-time monitoring and visualization for Claude Code agents through comprehensive hook event tracking",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/client",
+    "apps/server"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --prefix apps/client && npm install --prefix apps/server",
+    "build": "npm run build --prefix apps/client && npm run typecheck --prefix apps/server",
+    "build:client": "npm run build --prefix apps/client",
+    "build:server": "npm run typecheck --prefix apps/server",
+    "dev": "./scripts/start-system.sh",
+    "start": "./scripts/start-system.sh",
+    "stop": "./scripts/reset-system.sh",
+    "test": "./scripts/test-system.sh",
+    "clean": "rm -rf apps/client/node_modules apps/server/node_modules node_modules",
+    "reset": "./scripts/reset-system.sh"
+  },
+  "bin": {
+    "claude-observability": "./scripts/start-system.sh",
+    "claude-obs-start": "./scripts/start-system.sh",
+    "claude-obs-stop": "./scripts/reset-system.sh",
+    "claude-obs-test": "./scripts/test-system.sh"
+  },
+  "keywords": [
+    "claude-code",
+    "observability",
+    "monitoring",
+    "hooks",
+    "multi-agent",
+    "real-time",
+    "vue",
+    "typescript",
+    "bun"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}

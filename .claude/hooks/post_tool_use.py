@@ -1,6 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.8"
+# dependencies = [
+#     "python-dotenv",
+# ]
 # ///
 
 import json
@@ -8,6 +11,12 @@ import os
 import sys
 from pathlib import Path
 from utils.constants import ensure_session_log_dir
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv is optional
 
 def main():
     try:
