@@ -1,0 +1,18 @@
+name: Block PRs from disler fork
+on:
+  pull_request_target:
+    types: [opened, reopened]
+jobs:
+  check-author:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Close if PR originates from blocked repo/user
+      env:
+        BLOCKED_USER: disler
+        BLOCKED_REPO: disler/claude-code-hooks-multi-agent-observability
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        AUTHOR="${{ github.event.pull_request.head.repo.full_name }}"
+        if [[ "$AUTHOR" == "$BLOCKED_REPO" ]] || [[ "${{ github.actor }}" == "$BLOCKED_USER" ]]; then
+          gh pr close "${{ github.event.pull_request.number }}" --repo ${{ github.repository }} --comment "Pull requests from $BLOCKED_REPO are not accepted. Please open an issue or use the upstream sync procedure."
+        fi
