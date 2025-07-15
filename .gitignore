@@ -221,6 +221,11 @@ logs/*
 secrets/
 credentials/
 
+# Additional ignores
+node_modules/
+venv/
+.env
+
 # Dependency directories
 vendor/
 packages/

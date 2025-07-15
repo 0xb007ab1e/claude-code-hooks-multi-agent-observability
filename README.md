@@ -1,12 +1,116 @@
 # Multi-Agent Observability System
 
-Real-time monitoring and visualization for Claude Code agents through comprehensive hook event tracking. You can watch the [full breakdown here](https://youtu.be/9ijnN985O_c).
+Real-time monitoring and visualization for Claude Code agents through comprehensive hook event tracking.
 
 ## 🎯 Overview
 
-This system provides complete observability into Claude Code agent behavior by capturing, storing, and visualizing Claude Code [Hook events](https://docs.anthropic.com/en/docs/claude-code/hooks) in real-time. It enables monitoring of multiple concurrent agents with session tracking, event filtering, and live updates. 
+This system provides complete observability into Claude Code agent behavior by capturing, storing, and visualizing Claude Code [Hook events](https://docs.anthropic.com/en/docs/claude-code/hooks) in real-time. It enables monitoring of multiple concurrent agents with session tracking, event filtering, and live updates.
 
-<img src="images/app.png" alt="Multi-Agent Observability Dashboard" style="max-width: 800px; width: 100%;">
+![Multi-Agent Observability Dashboard](images/app.png)
+
+## 📋 Prerequisites
+
+- **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** - Anthropic's official CLI for Claude
+- **[Astral uv](https://docs.astral.sh/uv/)** - Fast Python package manager (required for hook scripts)
+- **[Bun](https://bun.sh/)** and **npm** - For running the server and client
+- **Python 3.8+** - For hook scripts
+- **Anthropic API Key** - Required for Claude Code functionality
+- **OpenAI API Key** - Optional for multi-model support
+- **ElevenLabs API Key** - Optional for audio features
+
+## 🚀 One-line Bootstrap
+
+```bash
+./scripts/start_env.sh
+```
+
+This command will:
+- Create and activate a Python virtual environment
+- Load environment variables from `.env` file
+- Install required dependencies
+- Start the development environment with tmux
+
+## 🔑 How to Set/Change API Keys
+
+1. Copy the sample environment file:
+   ```bash
+   cp .env.sample .env
+   ```
+
+2. Edit `.env` with your API keys:
+   ```bash
+   ANTHROPIC_API_KEY=your_actual_key_here
+   OPENAI_API_KEY=optional_key_here
+   ELEVENLABS_API_KEY=optional_key_here
+   ENGINEER_NAME=Your Name
+   ```
+
+3. Keys will be automatically loaded when you run `./scripts/start_env.sh`
+
+## 🔄 Updating Dependencies
+
+### JavaScript/TypeScript Dependencies
+```bash
+# Update all npm packages
+npm update
+
+# Update client dependencies
+npm update --prefix apps/client
+
+# Update server dependencies
+npm update --prefix apps/server
+```
+
+### Python Dependencies
+```bash
+# Using pip-compile (if you have pip-tools installed)
+pip-compile --upgrade
+
+# Or using regular pip
+pip install --upgrade pip
+pip install --upgrade pyyaml requests python-dotenv watchdog
+```
+
+## ❓ Troubleshooting FAQ
+
+### Common Issues
+
+**Q: Virtual environment not activating**
+- Ensure Python 3.8+ is installed
+- Check that the virtual environment exists in the project root
+- Run `python3 -m venv venv` if it doesn't exist
+
+**Q: Hook scripts not executing**
+- Make sure `uv` is installed: `pip install uv`
+- Verify paths in `.claude/settings.json` are absolute
+- Run `/convert_paths_absolute` in Claude Code to fix paths
+
+**Q: Server won't start**
+- Check if port 4000 is available: `lsof -i :4000`
+- Ensure Bun is installed and up to date: `bun --version`
+- Verify all dependencies are installed: `npm install --prefix apps/server`
+
+**Q: Client won't start**
+- Check if port 5173 is available: `lsof -i :5173`
+- Run `npm install --prefix apps/client` to install dependencies
+- Make sure Node.js 18+ is installed: `node --version`
+
+**Q: API keys not working**
+- Verify `.env` file is in the project root
+- Check that keys are properly formatted (no quotes needed)
+- Ensure the `.env` file is not committed to git
+- Restart the application after changing keys
+
+**Q: WebSocket connection issues**
+- Verify the server is running on port 4000
+- Check browser console for connection errors
+- Ensure no firewall is blocking WebSocket connections
+- Try refreshing the browser page
+
+**Q: tmux session issues**
+- Install tmux if not available: `brew install tmux` (macOS) or `apt-get install tmux` (Linux)
+- Kill existing sessions: `tmux kill-session -t claude-dev-env`
+- Use `--no-tmux` flag to skip tmux: `./scripts/start_env.sh --no-tmux`
 
 ## 🏗️ Architecture
 
@@ -16,81 +120,18 @@ Claude Agents → Hook Scripts → HTTP POST → Bun Server → SQLite → WebSo
 
 ![Agent Data Flow Animation](images/AgentDataFlowV2.gif)
 
-## 📋 Setup Requirements
-
-Before getting started, ensure you have the following installed:
-
-- **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** - Anthropic's official CLI for Claude
-- **[Astral uv](https://docs.astral.sh/uv/)** - Fast Python package manager (required for hook scripts)
-- **[Bun](https://bun.sh/)**, **npm**, or **yarn** - For running the server and client
-- **Anthropic API Key** - Set as `ANTHROPIC_API_KEY` environment variable
-- **OpenAI API Key** (optional) - For multi-model support with just-prompt MCP tool
-- **ElevenLabs API Key** (optional) - For audio features
-
-### Configure .claude Directory
-
-To setup observability in your repo,we need to copy the .claude directory to your project root.
-
-To integrate the observability hooks into your projects:
-
-1. **Copy the entire `.claude` directory to your project root:**
-   ```bash
-   cp -R .claude /path/to/your/project/
-   ```
-
-2. **Update the `settings.json` configuration:**
-   
-   Open `.claude/settings.json` in your project and modify the `source-app` parameter to identify your project:
-   
-   ```json
-   {
-     "hooks": {
-       "PreToolUse": [{
-         "matcher": ".*",
-         "hooks": [
-           {
-             "type": "command",
-             "command": "uv run .claude/hooks/pre_tool_use.py"
-           },
-           {
-             "type": "command",
-             "command": "uv run .claude/hooks/send_event.py --source-app YOUR_PROJECT_NAME --event-type PreToolUse"
-           }
-         ]
-       }],
-       // ... (mirror the above for other event types)
-     }
-   }
-   ```
-   
-   Replace `YOUR_PROJECT_NAME` with a unique identifier for your project (e.g., `my-api-server`, `react-app`, etc.).
-
-3. **Ensure the observability server is running:**
-   ```bash
-   # From the observability project directory (this codebase)
-   ./scripts/start-system.sh
-   ```
-
-Now your project will send events to the observability system whenever Claude Code performs actions.
-
 ## 🚀 Quick Start
 
-You can quickly view how this works by running this repositories .claude setup.
+1. **Start the system:**
+   ```bash
+   ./scripts/start_env.sh
+   ```
 
-```bash
-# 1. Start both server and client
-./scripts/start-system.sh
+2. **Open the dashboard:**
+   Navigate to http://localhost:5173 in your browser
 
-# 2. Open http://localhost:5173 in your browser
-
-# 3. Open Claude Code and run the following command:
-Run git ls-files to understand the codebase.
-
-# 4. Watch events stream in the client
-
-# 5. Copy the .claude folder to other projects you want to emit events from.
-cp -R .claude <directory of your codebase you want to emit events from>
-```
+3. **Test with Claude Code:**
+   Open Claude Code and run any command to see events appear in real-time
 
 ## 📁 Project Structure
 
@@ -109,20 +150,8 @@ claude-code-hooks-multi-agent-observability/
 │   └── client/             # Vue 3 TypeScript client
 │       ├── src/
 │       │   ├── App.vue     # Main app with theme & WebSocket management
-│       │   ├── components/
-│       │   │   ├── EventTimeline.vue      # Event list with auto-scroll
-│       │   │   ├── EventRow.vue           # Individual event display
-│       │   │   ├── FilterPanel.vue        # Multi-select filters
-│       │   │   ├── ChatTranscriptModal.vue # Chat history viewer
-│       │   │   ├── StickScrollButton.vue  # Scroll control
-│       │   │   └── LivePulseChart.vue     # Real-time activity chart
-│       │   ├── composables/
-│       │   │   ├── useWebSocket.ts        # WebSocket connection logic
-│       │   │   ├── useEventColors.ts      # Color assignment system
-│       │   │   ├── useChartData.ts        # Chart data aggregation
-│       │   │   └── useEventEmojis.ts      # Event type emoji mapping
-│       │   ├── utils/
-│       │   │   └── chartRenderer.ts       # Canvas chart rendering
+│       │   ├── components/ # Vue components
+│       │   ├── composables/ # Vue composables
 │       │   └── types.ts    # TypeScript interfaces
 │       ├── .env.sample     # Environment configuration template
 │       └── package.json
@@ -139,86 +168,14 @@ claude-code-hooks-multi-agent-observability/
 │   └── settings.json      # Hook configuration
 │
 ├── scripts/               # Utility scripts
+│   ├── start_env.sh      # Unified launcher (venv + env vars + launch_dev_env.py)
+│   ├── stop_env.sh       # Unified teardown (tmux + services + cleanup)
 │   ├── start-system.sh   # Launch server & client
 │   ├── reset-system.sh   # Stop all processes
 │   └── test-system.sh    # System validation
 │
 └── logs/                 # Application logs (gitignored)
 ```
-
-## 🔧 Component Details
-
-### 1. Hook System (`.claude/hooks/`)
-
-> If you want to master claude code hooks watch [this video](https://github.com/disler/claude-code-hooks-mastery)
-
-The hook system intercepts Claude Code lifecycle events:
-
-- **`send_event.py`**: Core script that sends event data to the observability server
-  - Supports `--add-chat` flag for including conversation history
-  - Validates server connectivity before sending
-  - Handles all event types with proper error handling
-
-- **Event-specific hooks**: Each implements validation and data extraction
-  - `pre_tool_use.py`: Blocks dangerous commands, validates tool usage
-  - `post_tool_use.py`: Captures execution results and outputs
-  - `notification.py`: Tracks user interaction points
-  - `stop.py`: Records session completion with optional chat history
-  - `subagent_stop.py`: Monitors subagent task completion
-
-### 2. Server (`apps/server/`)
-
-Bun-powered TypeScript server with real-time capabilities:
-
-- **Database**: SQLite with WAL mode for concurrent access
-- **Endpoints**:
-  - `POST /events` - Receive events from agents
-  - `GET /events/recent` - Paginated event retrieval with filtering
-  - `GET /events/filter-options` - Available filter values
-  - `WS /stream` - Real-time event broadcasting
-- **Features**:
-  - Automatic schema migrations
-  - Event validation
-  - WebSocket broadcast to all clients
-  - Chat transcript storage
-
-### 3. Client (`apps/client/`)
-
-Vue 3 application with real-time visualization:
-
-- **Visual Design**:
-  - Dual-color system: App colors (left border) + Session colors (second border)
-  - Gradient indicators for visual distinction
-  - Dark/light theme support
-  - Responsive layout with smooth animations
-
-- **Features**:
-  - Real-time WebSocket updates
-  - Multi-criteria filtering (app, session, event type)
-  - Live pulse chart with session-colored bars and event type indicators
-  - Time range selection (1m, 3m, 5m) with appropriate data aggregation
-  - Chat transcript viewer with syntax highlighting
-  - Auto-scroll with manual override
-  - Event limiting (configurable via `VITE_MAX_EVENTS_TO_DISPLAY`)
-
-- **Live Pulse Chart**:
-  - Canvas-based real-time visualization
-  - Session-specific colors for each bar
-  - Event type emojis displayed on bars
-  - Smooth animations and glow effects
-  - Responsive to filter changes
-
-## 🔄 Data Flow
-
-1. **Event Generation**: Claude Code executes an action (tool use, notification, etc.)
-2. **Hook Activation**: Corresponding hook script runs based on `settings.json` configuration
-3. **Data Collection**: Hook script gathers context (tool name, inputs, outputs, session ID)
-4. **Transmission**: `send_event.py` sends JSON payload to server via HTTP POST
-5. **Server Processing**:
-   - Validates event structure
-   - Stores in SQLite with timestamp
-   - Broadcasts to WebSocket clients
-6. **Client Update**: Vue app receives event and updates timeline in real-time
 
 ## 🎨 Event Types & Visualization
 
@@ -231,43 +188,22 @@ Vue 3 application with real-time visualization:
 | SubagentStop | 👥     | Subagent finished     | Session-based |
 | PreCompact   | 📦     | Context compaction    | Session-based |
 
-## 🔌 Integration
+## 🔌 Integration with Other Projects
 
-### For New Projects
+To integrate this observability system into your own projects:
 
-1. Copy the event sender:
+1. **Copy the `.claude` directory to your project root:**
    ```bash
-   cp .claude/hooks/send_event.py YOUR_PROJECT/.claude/hooks/
+   cp -R .claude /path/to/your/project/
    ```
 
-2. Add to your `.claude/settings.json`:
-   ```json
-   {
-     "hooks": {
-       "PreToolUse": [{
-         "matcher": ".*",
-         "hooks": [{
-           "type": "command",
-           "command": "uv run .claude/hooks/send_event.py --source-app YOUR_APP --event-type PreToolUse"
-         }]
-       }]
-     }
-   }
+2. **Update the `settings.json` configuration:**
+   Replace `cc-hooks-observability` with your project name in `.claude/settings.json`
+
+3. **Ensure the observability server is running:**
+   ```bash
+   ./scripts/start_env.sh
    ```
-
-### For This Project
-
-Already integrated! Hooks run both validation and observability:
-```json
-{
-  "type": "command",
-  "command": "uv run .claude/hooks/pre_tool_use.py"
-},
-{
-  "type": "command", 
-  "command": "uv run .claude/hooks/send_event.py --source-app cc-hooks-observability --event-type PreToolUse"
-}
-```
 
 ## 🧪 Testing
 
@@ -295,9 +231,8 @@ Copy `.env.sample` to `.env` in the project root and fill in your API keys:
 **Application Root** (`.env` file):
 - `ANTHROPIC_API_KEY` – Anthropic Claude API key (required)
 - `ENGINEER_NAME` – Your name (for logging/identification)
-- `GEMINI_API_KEY` – Google Gemini API key (optional)
 - `OPENAI_API_KEY` – OpenAI API key (optional)
-- `ELEVEN_API_KEY` – ElevenLabs API key (optional)
+- `ELEVENLABS_API_KEY` – ElevenLabs API key (optional)
 
 **Client** (`.env` file in `apps/client/.env`):
 - `VITE_MAX_EVENTS_TO_DISPLAY=100` – Maximum events to show (removes oldest when exceeded)
@@ -307,6 +242,13 @@ Copy `.env.sample` to `.env` in the project root and fill in your API keys:
 - Server: `4000` (HTTP/WebSocket)
 - Client: `5173` (Vite dev server)
 
+## 📊 Technical Stack
+
+- **Server**: Bun, TypeScript, SQLite
+- **Client**: Vue 3, TypeScript, Vite, Tailwind CSS
+- **Hooks**: Python 3.8+, Astral uv
+- **Communication**: HTTP REST, WebSocket
+
 ## 🛡️ Security Features
 
 - Blocks dangerous commands (`rm -rf`, etc.)
@@ -314,37 +256,6 @@ Copy `.env.sample` to `.env` in the project root and fill in your API keys:
 - Validates all inputs before execution
 - No external dependencies for core functionality
 
-## 📊 Technical Stack
+## 📝 License
 
-- **Server**: Bun, TypeScript, SQLite
-- **Client**: Vue 3, TypeScript, Vite, Tailwind CSS
-- **Hooks**: Python 3.8+, Astral uv, TTS (ElevenLabs or OpenAI), LLMs (Claude or OpenAI)
-- **Communication**: HTTP REST, WebSocket
-
-## 🔧 Troubleshooting
-
-### Hook Scripts Not Working
-
-If your hook scripts aren't executing properly, it might be due to relative paths in your `.claude/settings.json`. Claude Code documentation recommends using absolute paths for command scripts.
-
-**Solution**: Use the custom Claude Code slash command to automatically convert all relative paths to absolute paths:
-
-```bash
-# In Claude Code, simply run:
-/convert_paths_absolute
-```
-
-This command will:
-- Find all relative paths in your hook command scripts
-- Convert them to absolute paths based on your current working directory
-- Create a backup of your original settings.json
-- Show you exactly what changes were made
-
-This ensures your hooks work correctly regardless of where Claude Code is executed from.
-
-## Master AI Coding
-> And prepare for Agentic Engineering
-
-Learn to code with AI with foundational [Principles of AI Coding](https://agenticengineer.com/principled-ai-coding?y=cchookobvs)
-
-Follow the [IndyDevDan youtube channel](https://www.youtube.com/@indydevdan) for more AI coding tips and tricks.
+MIT License - see LICENSE file for details.
